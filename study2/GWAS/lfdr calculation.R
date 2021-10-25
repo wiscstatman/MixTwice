@@ -57,22 +57,11 @@ p_pval = ggplot(data=bmi) +
         axis.line = element_line(linetype = "solid"),
         panel.border = element_rect(linetype = "solid", size = 1.5, fill = NA))
 
-p_N = ggplot(data=bmi) +
-  geom_histogram(bins=100, aes(x = ind_covar_N, y = ..density..))+
-  labs(x = "N")+
-  theme(plot.title = element_text(color = "black", size = 16, hjust = 0.5),
-        strip.text.x = element_text(size = 12, colour = "black", angle = 0),
-        legend.position = "top",
-        plot.caption = element_text(color = "black", size = 16, face = "italic", hjust = 1),
-        axis.text = element_text(size = 12),
-        axis.title.x  = element_text(size = 16, angle = 0),
-        axis.title.y  = element_text(size = 16, angle = 90),
-        legend.title = element_text(size = 12, angle = 0),
-        legend.text = element_text(size = 12, angle = 0),
-        axis.line = element_line(linetype = "solid"),
-        panel.border = element_rect(linetype = "solid", size = 1.5, fill = NA))
+library(ggpubr)
 
-pdf(file = "F://Harddrive-Jul-17-2021//MixTwice follow up//GWAS_visualization.pdf", height = 8, width = 14)
+figure = ggarrange(p_effect, p_test, p_pval)
+
+pdf(file = "F://Harddrive-Jul-17-2021//MixTwice follow up//GWAS//GWAS_visualization.pdf", height = 8, width = 14)
 
 figure
 
