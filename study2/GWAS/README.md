@@ -1,4 +1,4 @@
-## Yeast in silico experiments
+## Case study_GWAS data
 
 This is a directory for GWAS data
 
