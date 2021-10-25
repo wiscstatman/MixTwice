@@ -242,6 +242,12 @@ for(nn in 1:10){
   s2 = s20[oo == nn]
   lik1 = t(exp(-0.5 * (t((outer(theta, grid1, "-"))^2)/(grid2)^2))/(grid2 * 
                                                                       sqrt(2 * pi)))
+  y = outer(df * s2, (1/gridsigma^2), "*")
+  m = df/2
+  lik2 = y^(m - 1) * exp(-0.5 * y)/((2^m) * (gamma(m)))
+  lik22 = matrix(rep(lik2, ltheta), nrow = nrow(lik2))
+  lik1 = lik1 * lik22
+  
   for (i in 1:sum(oo == nn)) {
     ddd = lik1[i, ] * est.array
     UUU = NULL
