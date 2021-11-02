@@ -1,0 +1,58 @@
+---
+title: "simulation validation of non-central F distribution"
+author: "Zihao Zheng"
+date: "November 1, 2021"
+output: html_document
+---
+
+```{r}
+
+## simulation check of non-central F distribution
+
+m = 5 ## five group comparison
+
+neach = 20 ## each group, 20 subjects
+
+n = neach * m ## total size
+
+mu = c(-2, -1, 0, 1, 2)
+
+mu_bar = sum(mu*neach)/n
+
+sigma = 1 ## equal variance of each group
+
+group = rep(factor(c(1:m)), each = neach)
+
+nsim = 10^4
+
+Fstat = NULL
+
+for(nn in 1:nsim){
+  
+  y = NULL
+  
+  for (i in 1:m) {
+    
+    y = c(y, rnorm(neach, mean = mu[i], sd = sigma))
+    
+  }
+  
+  ## using one-way anova to get the F-stat
+  
+  fit = aov(y~group)
+  
+  Fstat[nn] = summary(fit)[[1]]$`F value`[1]
+  
+}
+
+
+nu1 = m - 1
+nu2 = n - m
+
+lambda = (1/sigma^2) * sum(neach * (mu-mu_bar)^2)
+
+hist(Fstat, 100, probability = T)
+
+lines(density(rf(10^4, df1 = nu1, df2 = nu2, ncp = lambda)), col = "red", lwd = 2)
+
+```

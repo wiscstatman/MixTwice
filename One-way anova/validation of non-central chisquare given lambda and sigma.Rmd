@@ -1,0 +1,86 @@
+---
+title: "validation of non-central chisquare given lambda and sigma"
+author: "Zihao Zheng"
+date: "November 2, 2021"
+output: html_document
+---
+
+### setting, and definition of parameter of interest
+
+1. number of groups: $k$
+2. number of observations within each group: $n_1, n_2, ..., n_k$
+3. total number of observations: $n = \sum_{i=1}^{k} n_i$
+4. input statistics: (SSB, SSE) where
+
+$${\rm SSB} = \sum_{i=1}^{k}n_i(\bar X_{i.} - \bar X_{..})^2$$
+$${\rm SSE} = \sum_{i=1}^{k}\sum_{j=1}^{n_i}(X_{ij} - \bar X_{i.})^2$$
+
+5. parameter of interest: $(\lambda, \sigma^2)$ where $\sigma^2$ is the variance (equal across $k$ groups) within each grup and $\lambda$ is the followin: $$\lambda = \sum_{i=1}^{k} n_i (\mu_i - \bar \mu)^2$$ where $\mu_i$ is the mean parameter of each group and $\bar \mu$ is the mean parameter of all observations: $$\bar \mu = \frac{1}{n}\sum_{i=1}^{k}n_i\mu_i$$
+
+6. out null hypothesis is $$H_0: \mu_1 = \mu_2 = ... = \mu_k$$ or equivalently $$H_0: \lambda = 0$$
+
+7. conditional likelihood:
+$$\frac{\rm SSE}{\sigma^2}|\sigma^2 \sim \chi^2_{n-m}; \frac{\rm SSB}{\sigma^2}|(\lambda,\sigma^2) \sim \chi^2_{m-1, \frac{\lambda}{\sigma^2}}$$
+
+### simulation verifying the conditional likelihood
+
+```{r}
+
+m = 5 ## five group comparison
+
+neach = 20 ## each group, 20 subjects
+
+n = neach * m ## total size
+
+mu = c(-2, -1, 0, 1, 2)
+
+mu_bar = sum(mu*neach)/n
+
+sigma = 0.5 ## equal variance of each group
+
+lambda = sum(neach*(mu - mu_bar)^2)
+
+nu1 = m - 1 ## df on numerator
+nu2 = n - m ## df on denominator
+
+group = rep(factor(c(1:m)), each = neach)
+
+nsim = 10^4
+
+SSB = NULL
+SSE = NULL
+
+for(nn in 1:nsim){
+  
+  y = NULL
+  
+  for (i in 1:m) {
+    
+    y = c(y, rnorm(neach, mean = mu[i], sd = sigma))
+    
+  }
+  
+  ## using one-way anova to get the F-stat
+  
+  fit = aov(y~group)
+  
+  fit.summary = summary(fit)[[1]]
+  
+  SSB[nn] = fit.summary$`Sum Sq`[1]
+  SSE[nn] = fit.summary$`Sum Sq`[2]
+  
+}
+
+## check for SSE
+
+hist(SSE/sigma^2, 100, probability = T)
+
+lines(density(rchisq(10^4, df = n - m)), col = "red", lwd = 2)
+
+## check for SSB
+
+hist(SSB/sigma^2, 100, probability = T)
+
+lines(density(rchisq(10^4, df = m - 1, ncp = lambda/sigma^2)), col = "red", lwd = 2)
+
+```
