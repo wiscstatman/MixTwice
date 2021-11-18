@@ -146,9 +146,9 @@ simu = function(pi0, ## number of testings on null
   
   for(i in 1:l){
     
-    likelihood.SSE[i,] = dchisq(SSE[i]/grid.sigma22, df = n-m)
+    likelihood.SSE[i,] = dchisq(SSE[i]/grid.sigma22, df = n-m)/grid.sigma22
     
-    likelihood.SSB[i,] = dchisq(SSB[i]/grid.sigma22, df = m-1, ncp = grid.lambda2/grid.sigma22)
+    likelihood.SSB[i,] = dchisq(SSB[i]/grid.sigma22, df = m-1, ncp = grid.lambda2/grid.sigma22)/grid.sigma22
     
   }
   
