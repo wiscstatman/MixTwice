@@ -61,4 +61,4 @@ if (file.exists(result_file)) {
 
 res$rand_covar <- rnorm(nrow(res))
 
-save(dsd, file = "E://github_local//MixTwice//study2//Bulk RNA-seq//mir200c//mir200c_processed data.RData")
+save(res, file = "E://github_local//MixTwice//study2//Bulk RNA-seq//mir200c//mir200c_processed data.RData")
