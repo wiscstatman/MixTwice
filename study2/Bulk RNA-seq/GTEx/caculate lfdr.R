@@ -116,7 +116,7 @@ mix.mixtwice = get_mixing(thetaHat = res$effect_size,
                           s2 = res$SE^2,
                           Btheta = 30,
                           Bsigma = 10,
-                          df = 9, 
+                          df = 18, 
                           prop = 0.01)
 
 plot(mix.mixtwice$grid.theta, mix.mixtwice$mix.theta)
@@ -179,7 +179,7 @@ mixtwice_lfdr = function(thetaHat, s2, df, mix.mixtwice){
 
 lfdr.mt = mixtwice_lfdr(thetaHat = res$effect_size,
                         s2 = res$SE^2,
-                        df = 9,
+                        df = 18,
                         mix.mixtwice = mix.mixtwice)
 
 save(mix.mixtwice, lfdr.mt, file = "F://Harddrive-Jul-17-2021//MixTwice follow up//RNAseq//mixtwice_result.RData")
@@ -211,7 +211,7 @@ ihw = adj_pvalues(ihw(res$pval, covariates = res$ind_covariate, alpha = 0.05))
 ## ash
 library(ashr)
 
-ash = get_lfsr(ash(betahat = res$effect_size, sebetahat = res$SE, df = 9))
+ash = get_lfsr(ash(betahat = res$effect_size, sebetahat = res$SE, df = 18))
 
 ## BL
 
