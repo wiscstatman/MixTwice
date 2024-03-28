@@ -42,6 +42,25 @@ pmga <- function(ss,ff)
 
 # try it
 
+
+    notpooled <- T
+    ss <- alpha
+    ff <- beta
+    id <- seq(1,nsupp)
+    nn <- nsupp
+   while( notpooled )
+	{
+	 tmp <- pmga(ss,ff)
+	 id <- tmp$tracer[id]
+	 ss <- tmp$ss
+	 ff <- tmp$ff
+	 mm <- max(tmp$tracer)
+	 notpooled <- ifelse( mm<nn & mm>1 ,T,F)
+	 nn <- mm
+	}
+
+
+
 set.seed(453)
 
 x <- rbinom(10, prob=seq(.1,.9, length=10), size=20)
